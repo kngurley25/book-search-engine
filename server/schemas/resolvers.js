@@ -1,7 +1,14 @@
+const { User, Book } = require("../models");
+
 const resolvers = {
     Query: {
-        helloworld: () => {
-            return 'hello world!';
+        me: async (parent, args, context) => {
+            if (context.user) {
+                const userData = await User.findOne({ _id: context.user._id })
+                    .select('-__v - password')
+                    .populate('bookCount')
+                    .populate('savedBooks')
+            }
         }
     }
 };
