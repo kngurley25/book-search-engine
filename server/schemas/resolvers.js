@@ -1,5 +1,4 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { sign } = require("jsonwebtoken");
 const { User, Book } = require("../models");
 const { signToken } = require("../utils/auth");
 
@@ -32,9 +31,24 @@ const resolvers = {
         },
         addUser: async (parent, args) => {
             const user = await User.create(args);
-            // const token = signToken(user);
-            // return { token, user };
-            return user;
+            const token = signToken(user);
+            return { token, user };
+        },
+        saveBook: async (parent, { bookId }, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                { $addToSet: { savedBooks: bookId }},
+                { new: true }
+            ).populate('savedBooks');
+            return updatedUser;
+        },
+        removeBook: async (parent, { bookId }, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                { $pull: { savedBooks: bookId }},
+                { new: true }
+            )
+            return updatedUser;
         }
     }
 };
