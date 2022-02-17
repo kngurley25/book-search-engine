@@ -12,12 +12,12 @@ import { REMOVE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
   // const [userData, setUserData] = useState({});
-  const { data: userData } = useQuery(GET_ME);
+  const { data } = useQuery(GET_ME);
   const [ removeBook ] = useMutation(REMOVE_BOOK);
   
   // use this to determine if `useEffect()` hook needs to run again
+  const userData = data?.me || {}
   const userDataLength = Object.keys(userData).length;
-
 
   // useEffect(() => {
   //   const getUserData = async () => {
