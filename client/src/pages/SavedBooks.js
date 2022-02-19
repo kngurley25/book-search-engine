@@ -1,3 +1,4 @@
+import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
@@ -27,12 +28,9 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await removeBook({
+      await removeBook({
         variables: { bookId }
       })
-      if (!response.ok) {
-        throw new Error ('something went wrong');
-      }
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
