@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Book } = require("../models");
+const { User } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -11,8 +11,6 @@ const resolvers = {
         .select(
           "-__v -password"
         )
-        // .populate('bookCount')
-        // .populate('savedBooks');
         console.log(userData);
         return userData;
       }
@@ -45,15 +43,6 @@ const resolvers = {
         { $push: { savedBooks:  bookData  }},
         { new: true }
       )
-    //   .populate("savedBooks");
-    //   const updatedUser = {
-    //     ...user,
-    //     savedBooks: [...user.savedBooks, bookData],
-    //   };
-    //   user.savedBooks = user.savedBooks.length
-    //     ? [...user.savedBooks, bookData]
-    //     : [bookData];
-    //   await user.save();
       console.log(updatedUser);
       return updatedUser;
     },
