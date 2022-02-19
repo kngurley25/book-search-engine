@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
 // const routes = require('./routes');
+const {User} = require('./models');
 
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./schemas');
@@ -31,6 +32,10 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
+app.get('/delete', async (req, res) => {
+  await User.deleteMany();
+  res.sendStatus(200);
+})
 // app.use(routes);
 
 db.once('open', () => {
